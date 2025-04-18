@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Build URL with pagination parameters using the global variable field
         const urlWithParams = buildUrl(affiliatesJobs.restUrl, { page: currentPage, per_page: perPage });
+        paginationNav.innerHTML = '';
 
         // Fetch job data from the API
         // Use cache: 'no-store' to ensure fresh data is fetched
@@ -49,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <p><strong>Company: ${job.author.name}</strong></p>
                                 <p class="text-muted">Contact: ${job.contact}</p>
                                 <div class="card-text">${job.content}</div>
+                                <button class="btn btn-primary view-job-button" data-id="${job.id}">View Details</button>                                
                             </div>
                         </div>
                     `;
@@ -57,6 +59,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Call renderPagination to create pagination links w/ total pages
                 renderPagination(totalPages);
+                
+                // Attach event listeners to "View Details" buttons
+                Array.from(document.querySelectorAll('.view-job-button')).forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const jobId = this.getAttribute('data-id');
+                        loadJobDetails(jobId);
+                    });
+                });
             })
             .catch(error => {
                 console.error('Error fetching jobs:', error);
@@ -105,6 +116,43 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
+    }
+    
+    // Load full details for a single job
+    function loadJobDetails(jobId) {
+        // Show loading message in jobList and remove pagination
+        jobList.innerHTML = '<h3 class="mx-auto">Loading job details...</h3>';
+        paginationNav.innerHTML = '';
+
+        // Construct detail URL and fetch the job detail
+        const detailUrl = affiliatesJobs.restUrl + '/' + jobId;
+        fetch(detailUrl, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(job => {
+                // Build and display the job detail card
+                const detailHtml = `
+                    <div class="card my-3">
+                        <div class="card-block">
+                            <h3 class="card-title">${job.title}</h3>
+                            <p><strong>Company: ${job.author.name}</strong></p>
+                            <p class="text-muted">Contact: ${job.contact}</p>
+                            <div class="card-text">${job.content}</div>
+                            <button class="btn btn-secondary" id="back-to-list">Back to List</button>
+                        </div>
+                    </div>
+                `;
+                jobList.innerHTML = detailHtml;
+
+                // Add event listener to the back button to reload the list
+                document.getElementById('back-to-list').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    loadJobList();
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching job details:', error);
+                jobList.innerHTML = '<h3 class="mx-auto">Error loading job details.</h3>';
+            });
     }
 
     // Initial load of job list
