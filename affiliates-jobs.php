@@ -16,4 +16,3 @@ if (!defined('WPINC')) {
 }
 
 require_once plugin_dir_path(__FILE__) . 'includes/affiliates-jobs-display-shortcode.php';
-require_once plugin_dir_path(__FILE__) . 'includes/affiliates-jobs-display.php';
