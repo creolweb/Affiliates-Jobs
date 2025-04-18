@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load job list
     function loadJobList() {
         // Temporarily show loading message and clear pagination
-        jobList.innerHTML = '<h3 class="mx-auto">Loading jobs...</h3>';
+        jobList.innerHTML = '<div class="d-flex justify-content-center align-items-center" style="min-height: 500px;"><h3 class="text-center">Loading jobs...</h3></div>';
         paginationNav.innerHTML = '';
 
         const params = { page: currentPage, per_page: perPage };
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error fetching jobs:', error);
-                jobList.innerHTML = '<h3 class="mx-auto">Error loading jobs.</h3>';
+                jobList.innerHTML = '<div class="d-flex justify-content-center align-items-center" style="min-height: 500px;"><h3 class="text-center">Error loading jobs</h3></div>';
                 paginationNav.innerHTML = '';
             });
     }
