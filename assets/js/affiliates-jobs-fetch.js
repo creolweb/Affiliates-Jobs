@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load job list
     function loadJobList() {
         // Temporarily show loading message
-        jobList.innerHTML = '<p>Loading jobs...</p>';
+        jobList.innerHTML = '<h3 class="mx-auto">Loading jobs...</h3>';
 
         // Build URL with pagination parameters using the global variable field
         const urlWithParams = buildUrl(affiliatesJobs.restUrl, { page: currentPage, per_page: perPage });
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(({ data, totalPages }) => {
                 // If API returns a message or empty array, show a fallback message
                 if ( !data || (Array.isArray(data) && data.length === 0) || data.message ) {
-                    jobList.innerHTML = '<p>No jobs listed at this time.</p>';
+                    jobList.innerHTML = '<h3 class="mx-auto">No jobs listed at this time.</h3>';
                     paginationNav.innerHTML = '';
                     return;
                 }
@@ -42,11 +42,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 let html = '';
                 data.forEach(function(job) {
                     html += `
-                        <div class="job">
-                            <h3>${job.title}</h3>
-                            <div class="content">${job.content}</div>
-                            <p>Contact: ${job.contact}</p>
-                            <p>Company: ${job.author.name}</p>
+                        <div class="card my-3">
+                            <div class="card-block">
+                                <h3 class="card-title">${job.title}</h3>
+                                <p><strong>Company: ${job.author.name}</strong></p>
+                                <p class="text-muted">Contact: ${job.contact}</p>
+                                <div class="card-text">${job.content}</div>
+                            </div>
                         </div>
                     `;
                 });
@@ -57,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error fetching jobs:', error);
-                jobList.innerHTML = '<p>Error loading jobs.</p>';
+                jobList.innerHTML = '<h3 class="mx-auto">Error loading jobs.</h3>';
                 paginationNav.innerHTML = '';
             });
     }
@@ -70,17 +72,20 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        let paginationHtml = '';
+        let paginationHtml = '<ul class="pagination">';
         // Previous button
-        paginationHtml += `<a href="#" class="pagination-link" data-page="${currentPage - 1}" ${currentPage === 1 ? 'style="pointer-events:none;opacity:0.5;"' : ''}>Prev</a> `;
+        paginationHtml += `<li ${currentPage === 1 ? 'class="page-item disabled"' : 'class="page-item"'}><a href="#" data-page="${currentPage - 1}" class="page-link">Prev</a></li> `;
 
         // Numbered page links
         for (let i = 1; i <= totalPages; i++) {
-            paginationHtml += `<a href="#" class="pagination-link" data-page="${i}" style="${i === currentPage ? 'font-weight:bold;' : ''}">${i}</a> `;
+            paginationHtml += `<li ${currentPage === i ? 'class="page-item active"' : 'class="page-item"'}><a href="#" data-page="${currentPage}" class="page-link">${i}</a></li> `;
         }
         
         // Next button
-        paginationHtml += `<a href="#" class="pagination-link" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'style="pointer-events:none;opacity:0.5;"' : ''}>Next</a> `;
+        paginationHtml += `<li ${currentPage === totalPages ? 'class="page-item disabled"' : 'class="page-item"'}><a href="#" data-page="${currentPage + 1}" class="page-link">Next</a></li> `;
+        
+        // Close pagination list
+        paginationHtml += '</ul>';
 
         paginationNav.innerHTML = paginationHtml;
 

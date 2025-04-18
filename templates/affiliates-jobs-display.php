@@ -1,6 +1,6 @@
 ?>
 <div id="affiliates-portal-widget">
-    <div id="affiliates-job-list">
+    <div class="container-fluid" id="affiliates-job-list">
         <!-- Job cards will be loaded here via Fetch -->
     </div>
     <div id="pagination-nav">
