@@ -1,10 +1,23 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // Grab the divs by id from the jobs-display template
+    // Grab the divs and search element from the template
     const jobList = document.getElementById('affiliates-job-list');
     const paginationNav = document.getElementById('pagination-nav');
+    const searchInput = document.getElementById('job-search');
+
     let currentPage = 1;
     const perPage = affiliatesJobs.perPage; // Global variable from shortcode file
+    let searchTerm = ''; // Holds the current search query
+
+    // Helper: Debounce function (delays execution until after user stops typing)
+    function debounce(func, delay) {
+        let debounceTimer;
+        return function(...args) {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => func.apply(this, args), delay);
+        };
+    }
+
 
     // Builds query string parameters for URL using the params object
     // Important for pagination and any other parameters
@@ -17,12 +30,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load job list
     function loadJobList() {
-        // Temporarily show loading message
+        // Temporarily show loading message and clear pagination
         jobList.innerHTML = '<h3 class="mx-auto">Loading jobs...</h3>';
-
-        // Build URL with pagination parameters using the global variable field
-        const urlWithParams = buildUrl(affiliatesJobs.restUrl, { page: currentPage, per_page: perPage });
         paginationNav.innerHTML = '';
+
+        const params = { page: currentPage, per_page: perPage };
+        if (searchTerm) {
+            params.search = searchTerm;
+        }
+        const urlWithParams = buildUrl(affiliatesJobs.restUrl, params);
 
         // Fetch job data from the API
         // Use cache: 'no-store' to ensure fresh data is fetched
@@ -122,6 +138,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load full details for a single job
     function loadJobDetails(jobId) {
+        
+        // Hide the search bar when displaying job details
+        if (searchInput) {
+            searchInput.style.display = 'none';
+        }
+
         // Show loading message in jobList and remove pagination
         jobList.innerHTML = '<h3 class="mx-auto">Loading job details...</h3>';
         paginationNav.innerHTML = '';
@@ -148,6 +170,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Add event listener to the back button to reload the list
                 document.getElementById('back-to-list').addEventListener('click', function(e) {
                     e.preventDefault();
+                    // Re-display the search bar when going back to the list
+                    if (searchInput) {
+                        searchInput.style.display = '';
+                    }
                     loadJobList();
                 });
             })
@@ -155,6 +181,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error fetching job details:', error);
                 jobList.innerHTML = '<h3 class="mx-auto">Error loading job details.</h3>';
             });
+    }
+
+    // Attach an input event listener to the search field using debounce
+    // This will delay the search function until the user stops typing
+    if (searchInput) {
+        searchInput.addEventListener('input', debounce(function(e) {
+            searchTerm = e.target.value.trim();
+            currentPage = 1; // reset page to 1
+            loadJobList();
+        }, 500)); // 500ms delay
     }
 
     // Initial load of job list
