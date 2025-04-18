@@ -43,13 +43,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Build job cards
                 let html = '';
                 data.forEach(function(job) {
+                    const maxChars = 300;
+                    const truncatedContent = job.content.length > maxChars ? job.content.substring(0, maxChars) + '...' : job.content;
                     html += `
                         <div class="card my-3">
                             <div class="card-block">
                                 <h3 class="card-title">${job.title}</h3>
                                 <p><strong>Company: ${job.author.name}</strong></p>
                                 <p class="text-muted">Contact: ${job.contact}</p>
-                                <div class="card-text">${job.content}</div>
+                                <div class="card-text">${truncatedContent}</div>
                                 <button class="btn btn-primary my-4 view-job-button" data-id="${job.id}">View Details</button>                                
                             </div>
                         </div>
