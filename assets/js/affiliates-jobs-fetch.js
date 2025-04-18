@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(({ data, totalPages }) => {
                 // If API returns a message or empty array, show a fallback message
                 if ( !data || (Array.isArray(data) && data.length === 0) || data.message ) {
-                    jobList.innerHTML = '<h3 class="mx-auto">No jobs listed at this time.</h3>';
+                    jobList.innerHTML = '<div class="d-flex justify-content-center align-items-center" style="min-height: 500px;"><h3 class="text-center">No jobs listed at this time.</h3></div>';
                     paginationNav.innerHTML = '';
                     return;
                 }
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Show loading message in jobList and remove pagination
-        jobList.innerHTML = '<h3 class="mx-auto">Loading job details...</h3>';
+        jobList.innerHTML = '<div class="d-flex justify-content-center align-items-center" style="min-height: 500px;"><h3 class="text-center">Loading jobs...</h3></div>';
         paginationNav.innerHTML = '';
 
         // Construct detail URL and fetch the job detail
