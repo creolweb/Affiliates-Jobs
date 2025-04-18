@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <p><strong>Company: ${job.author.name}</strong></p>
                                 <p class="text-muted">Contact: ${job.contact}</p>
                                 <div class="card-text">${job.content}</div>
-                                <button class="btn btn-primary view-job-button" data-id="${job.id}">View Details</button>                                
+                                <button class="btn btn-primary my-4 view-job-button" data-id="${job.id}">View Details</button>                                
                             </div>
                         </div>
                     `;
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-    
+
     // Load full details for a single job
     function loadJobDetails(jobId) {
         // Show loading message in jobList and remove pagination
@@ -134,10 +134,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="card my-3">
                         <div class="card-block">
                             <h3 class="card-title">${job.title}</h3>
-                            <p><strong>Company: ${job.author.name}</strong></p>
+                            <p><strong>Company: ${job.author}</strong></p>
                             <p class="text-muted">Contact: ${job.contact}</p>
-                            <div class="card-text">${job.content}</div>
-                            <button class="btn btn-secondary" id="back-to-list">Back to List</button>
+                            <div class="card-text">${job.job_description}</div>
+                            <button class="btn btn-secondary my-4" id="back-to-list">Back to List</button>
                         </div>
                     </div>
                 `;
