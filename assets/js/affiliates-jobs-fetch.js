@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+
     // Grab the divs by id from the jobs-display template
     const jobList = document.getElementById('affiliates-job-list');
     const paginationNav = document.getElementById('pagination-nav');
@@ -72,13 +73,13 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        let paginationHtml = '<ul class="pagination">';
+        let paginationHtml = '<ul class="pagination justify-content-center">';
         // Previous button
         paginationHtml += `<li ${currentPage === 1 ? 'class="page-item disabled"' : 'class="page-item"'}><a href="#" data-page="${currentPage - 1}" class="page-link">Prev</a></li> `;
 
         // Numbered page links
         for (let i = 1; i <= totalPages; i++) {
-            paginationHtml += `<li ${currentPage === i ? 'class="page-item active"' : 'class="page-item"'}><a href="#" data-page="${currentPage}" class="page-link">${i}</a></li> `;
+            paginationHtml += `<li ${currentPage === i ? 'class="page-item active"' : 'class="page-item"'}><a href="#" data-page="${i}" class="page-link">${i}</a></li> `;
         }
         
         // Next button
@@ -90,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
         paginationNav.innerHTML = paginationHtml;
 
         // Attach event listeners for the pagination links
-        Array.from(document.querySelectorAll('.pagination-link')).forEach(link => {
+        Array.from(document.querySelectorAll('.page-link')).forEach(link => {
             link.addEventListener('click', function(e) {
 
                 // Prevent default link behavior to avoid page reload
