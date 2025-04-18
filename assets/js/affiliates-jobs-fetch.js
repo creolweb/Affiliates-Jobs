@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load job list
     function loadJobList() {
         // Temporarily show loading message and clear pagination
-        jobList.innerHTML = '<div class="d-flex justify-content-center align-items-center" style="min-height: 500px;"><h3 class="text-center">Loading jobs...</h3></div>';
+        jobList.innerHTML = '<div class="d-flex justify-content-center align-items-center"><h3 class="text-center">Loading jobs...</h3></div>';
         paginationNav.innerHTML = '';
 
         const params = { page: currentPage, per_page: perPage };
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(({ data, totalPages }) => {
                 // If API returns a message or empty array, show a fallback message
                 if ( !data || (Array.isArray(data) && data.length === 0) || data.message ) {
-                    jobList.innerHTML = '<div class="d-flex justify-content-center align-items-center" style="min-height: 500px;"><h3 class="text-center">No jobs listed at this time.</h3></div>';
+                    jobList.innerHTML = '<div class="d-flex justify-content-center align-items-center"><h3 class="text-center">No jobs listed at this time.</h3></div>';
                     paginationNav.innerHTML = '';
                     return;
                 }
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error fetching jobs:', error);
-                jobList.innerHTML = '<div class="d-flex justify-content-center align-items-center" style="min-height: 500px;"><h3 class="text-center">Error loading jobs</h3></div>';
+                jobList.innerHTML = '<div class="d-flex justify-content-center align-items-center"><h3 class="text-center">Error loading jobs</h3></div>';
                 paginationNav.innerHTML = '';
             });
     }
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Show loading message in jobList and remove pagination
-        jobList.innerHTML = '<div class="d-flex justify-content-center align-items-center" style="min-height: 500px;"><h3 class="text-center">Loading jobs...</h3></div>';
+        jobList.innerHTML = '<div class="d-flex justify-content-center align-items-center"><h3 class="text-center">Loading jobs...</h3></div>';
         paginationNav.innerHTML = '';
 
         // Construct detail URL and fetch the job detail
